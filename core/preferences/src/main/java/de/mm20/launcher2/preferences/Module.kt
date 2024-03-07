@@ -7,6 +7,7 @@ import de.mm20.launcher2.preferences.search.CalculatorSearchSettings
 import de.mm20.launcher2.preferences.search.CalendarSearchSettings
 import de.mm20.launcher2.preferences.search.FavoritesSettings
 import de.mm20.launcher2.preferences.search.FileSearchSettings
+import de.mm20.launcher2.preferences.search.GeminiSearchSettings
 import de.mm20.launcher2.preferences.search.RankingSettings
 import de.mm20.launcher2.preferences.search.ShortcutSearchSettings
 import de.mm20.launcher2.preferences.search.UnitConverterSettings
@@ -37,6 +38,7 @@ val preferencesModule = module {
     factory { ShortcutSearchSettings(get()) }
     factory { FavoritesSettings(get()) }
     factory { WikipediaSearchSettings(get()) }
+    factory { GeminiSearchSettings(get()) }
     factory { IconSettings(get()) }
     factory { RankingSettings(get()) }
     factory { CalendarSearchSettings(get()) }

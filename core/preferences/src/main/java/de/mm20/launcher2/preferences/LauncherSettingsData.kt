@@ -54,6 +54,8 @@ data class LauncherSettingsData(
     val unitConverterCurrencies: Boolean = true,
 
     val wikipediaSearchEnabled: Boolean = false,
+    val geminiSearchEnabled: Boolean = false,
+    val geminiCustomUrl: String? = null,
     val wikipediaSearchImages: Boolean = false,
     val wikipediaCustomUrl: String? = null,
 

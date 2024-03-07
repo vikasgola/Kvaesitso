@@ -22,6 +22,7 @@ import de.mm20.launcher2.search.Article
 import de.mm20.launcher2.search.CalendarEvent
 import de.mm20.launcher2.search.Contact
 import de.mm20.launcher2.search.File
+import de.mm20.launcher2.search.GeminiResponse
 import de.mm20.launcher2.search.SavableSearchable
 import de.mm20.launcher2.search.SearchService
 import de.mm20.launcher2.search.Searchable
@@ -73,6 +74,7 @@ class SearchVM : ViewModel(), KoinComponent {
     val contactResults = mutableStateOf<List<Contact>>(emptyList())
     val calendarResults = mutableStateOf<List<CalendarEvent>>(emptyList())
     val articleResults = mutableStateOf<List<Article>>(emptyList())
+    val geminiResults = mutableStateOf<List<GeminiResponse>>(emptyList())
     val websiteResults = mutableStateOf<List<Website>>(emptyList())
     val calculatorResults = mutableStateOf<List<Calculator>>(emptyList())
     val unitConverterResults = mutableStateOf<List<UnitConverter>>(emptyList())
@@ -139,6 +141,7 @@ class SearchVM : ViewModel(), KoinComponent {
                             results.contacts,
                             results.calendars,
                             results.wikipedia,
+                            results.gemini,
                             results.websites,
                             results.calculators,
                             results.unitConverters,
@@ -200,6 +203,7 @@ class SearchVM : ViewModel(), KoinComponent {
                         val unitConv = mutableListOf<UnitConverter>()
                         val calc = mutableListOf<Calculator>()
                         val articles = mutableListOf<Article>()
+                        val geminiResponses = mutableListOf<GeminiResponse>()
                         val website = mutableListOf<Website>()
                         val actions = mutableListOf<SearchAction>()
                         for (r in resultsList) {
@@ -218,6 +222,7 @@ class SearchVM : ViewModel(), KoinComponent {
                                 r is Calculator -> calc.add(r)
                                 r is Website -> website.add(r)
                                 r is Article -> articles.add(r)
+                                r is GeminiResponse -> geminiResponses.add(r)
                                 r is SearchAction -> actions.add(r)
                             }
                         }
@@ -232,6 +237,7 @@ class SearchVM : ViewModel(), KoinComponent {
                                 events,
                                 contacts,
                                 articles,
+                                geminiResponses,
                                 website,
                                 files,
                                 actions
@@ -245,6 +251,7 @@ class SearchVM : ViewModel(), KoinComponent {
                         contactResults.value = contacts
                         calendarResults.value = events
                         articleResults.value = articles
+                        geminiResults.value = geminiResponses
                         websiteResults.value = website
                         calculatorResults.value = calc
                         unitConverterResults.value = unitConv

@@ -1,5 +1,6 @@
 package de.mm20.launcher2.search
 
+import android.util.Log
 import de.mm20.launcher2.calculator.CalculatorRepository
 import de.mm20.launcher2.data.customattrs.CustomAttributesRepository
 import de.mm20.launcher2.data.customattrs.utils.withCustomLabels
@@ -34,6 +35,7 @@ internal class SearchServiceImpl(
     private val contactRepository: SearchableRepository<Contact>,
     private val fileRepository: SearchableRepository<File>,
     private val articleRepository: SearchableRepository<Article>,
+    private val geminiRepository: SearchableRepository<GeminiResponse>,
     private val unitConverterRepository: UnitConverterRepository,
     private val calculatorRepository: CalculatorRepository,
     private val websiteRepository: SearchableRepository<Website>,
@@ -123,7 +125,18 @@ internal class SearchServiceImpl(
                     .withCustomLabels(customAttributesRepository)
                     .collectLatest { r ->
                         results.update {
+                            Log.i("MM20", it.toString())
                             it.copy(wikipedia = r.toImmutableList())
+                        }
+                    }
+            }
+            launch {
+                delay(750)
+                geminiRepository.search(query, allowNetwork)
+                    .withCustomLabels(customAttributesRepository)
+                    .collectLatest { r ->
+                        results.update {
+                            it.copy(gemini = r.toImmutableList())
                         }
                     }
             }
@@ -166,6 +179,7 @@ data class SearchResults(
     val unitConverters: ImmutableList<UnitConverter>? = null,
     val websites: ImmutableList<Website>? = null,
     val wikipedia: ImmutableList<Article>? = null,
+    val gemini: ImmutableList<GeminiResponse>? = null,
     val searchActions: ImmutableList<SearchAction>? = null,
     val other: ImmutableList<SavableSearchable>? = null,
 )
@@ -181,6 +195,7 @@ fun SearchResults.toList(): List<Searchable> {
         unitConverters,
         websites,
         wikipedia,
+        gemini,
         searchActions,
         other,
     ).flatten()

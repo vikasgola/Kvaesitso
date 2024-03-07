@@ -101,6 +101,13 @@ fun createFactorySettings(context: Context): LegacySettings {
                 .setEnabled(false)
                 .setImages(false)
                 .setCustomUrl("")
+        ).
+        setGeminiSearch(
+            LegacySettings.GeminiSearchSettings
+                .newBuilder()
+                .setEnabled(false)
+                .setImages(false)
+                .setCustomUrl("")
         )
         .setWebsiteSearch(
             LegacySettings.WebsiteSearchSettings

@@ -1,10 +1,10 @@
-package de.mm20.launcher2.wikipedia
+package de.mm20.launcher2.gemini
 
 import android.content.Context
 import android.util.Log
 import de.mm20.launcher2.crashreporter.CrashReporter
-import de.mm20.launcher2.preferences.search.WikipediaSearchSettings
-import de.mm20.launcher2.search.Article
+import de.mm20.launcher2.preferences.search.GeminiSearchSettings
+import de.mm20.launcher2.search.GeminiResponse
 import de.mm20.launcher2.search.SearchableRepository
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -16,18 +16,18 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 
-internal class WikipediaRepository(
+internal class GeminiRepository(
     private val context: Context,
-    private val settings: WikipediaSearchSettings,
-) : SearchableRepository<Article> {
+    private val settings: GeminiSearchSettings,
+) : SearchableRepository<GeminiResponse> {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Default)
 
     private val httpClient = OkHttpClient
         .Builder()
-        .connectTimeout(200, TimeUnit.MILLISECONDS)
-        .readTimeout(3000, TimeUnit.MILLISECONDS)
-        .writeTimeout(1000, TimeUnit.MILLISECONDS)
+        .connectTimeout(10000, TimeUnit.MILLISECONDS)
+        .readTimeout(10000, TimeUnit.MILLISECONDS)
+        .writeTimeout(10000, TimeUnit.MILLISECONDS)
         .build()
 
     private lateinit var retrofit: Retrofit
@@ -40,22 +40,21 @@ internal class WikipediaRepository(
                     try { retrofit = Retrofit.Builder()
                             .client(httpClient)
                             .baseUrl(it.takeIf { !it.isNullOrBlank() }
-                                ?: context.getString(R.string.wikipedia_url))
+                                ?: context.getString(R.string.gemini_url))
                             .addConverterFactory(GsonConverterFactory.create())
                             .build()
-                        wikipediaService = retrofit.create(WikipediaApi::class.java)
+                        geminiService = retrofit.create(GeminiApi::class.java)
                     } catch (e: IllegalArgumentException) {
-                        Log.i("MM20", "iamfailed")
                         CrashReporter.logException(e)
                     }
                 }
         }
     }
 
-    private lateinit var wikipediaService: WikipediaApi
+    private lateinit var geminiService: GeminiApi
 
 
-    override fun search(query: String, allowNetwork: Boolean): Flow<ImmutableList<Wikipedia>> {
+    override fun search(query: String, allowNetwork: Boolean): Flow<ImmutableList<Gemini>> {
         if (query.length < 4 || !allowNetwork) return flowOf(persistentListOf())
 
         return settings.enabled.transformLatest {
@@ -64,10 +63,11 @@ internal class WikipediaRepository(
                 httpClient.dispatcher.cancelAll()
             }
 
-            if (!it || !::wikipediaService.isInitialized) return@transformLatest
+            if (!it || !::geminiService.isInitialized) return@transformLatest
             if (query.isBlank()) return@transformLatest
 
-            val results = queryWikipedia(query)
+            val results = queryGemini(query)
+            Log.i("MM20", results.toString())
             if (results != null) {
                 emit(persistentListOf(results))
             }
@@ -75,31 +75,31 @@ internal class WikipediaRepository(
 
     }
 
-    private suspend fun queryWikipedia(query: String): Wikipedia? {
+    private suspend fun queryGemini(query: String): Gemini? {
 
-        val wikipediaService = wikipediaService
-        val wikipediaUrl = retrofit.baseUrl().toString()
+        val geminiService = geminiService
+        val geminiUrl = retrofit.baseUrl().toString()
 
         val result = try {
-            val imageWidth = context.resources.displayMetrics.widthPixels / 2
-            wikipediaService.search(query, imageWidth)
+            val querycontent = QueryContent(
+                contents = listOf(QueryPart(listOf(QueryText(text = query))))
+            )
+            geminiService.search(querycontent)
         } catch (e: Exception) {
             CrashReporter.logException(e)
             return null
         }
 
-        val page = result.query?.pages?.values?.toList()?.getOrNull(0) ?: return null
+        val text = result.candidates.get(0).content.parts.get(0).text
 
-        val image = result.query.pages.values.toList().getOrNull(0)?.thumbnail?.source
-
-        return Wikipedia(
-            label = page.title,
-            id = page.pageid,
-            text = page.extract,
-            imageUrl = image,
-            sourceUrl = page.fullurl,
-            wikipediaUrl = wikipediaUrl,
-            sourceName = context.getString(R.string.wikipedia_source),
+        return Gemini(
+            label = "Google Gemini Response",
+            id = 1,
+            text = text,
+            imageUrl = null,
+            sourceUrl = "https://gemini.google.com/",
+            geminiUrl = geminiUrl,
+            sourceName = context.getString(R.string.gemini_source),
         )
     }
 

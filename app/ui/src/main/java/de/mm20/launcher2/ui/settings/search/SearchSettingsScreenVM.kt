@@ -9,6 +9,7 @@ import de.mm20.launcher2.preferences.SearchResultOrder
 import de.mm20.launcher2.preferences.search.CalculatorSearchSettings
 import de.mm20.launcher2.preferences.search.CalendarSearchSettings
 import de.mm20.launcher2.preferences.search.ContactSearchSettings
+import de.mm20.launcher2.preferences.search.GeminiSearchSettings
 import de.mm20.launcher2.preferences.search.ShortcutSearchSettings
 import de.mm20.launcher2.preferences.search.UnitConverterSettings
 import de.mm20.launcher2.preferences.search.WebsiteSearchSettings
@@ -27,6 +28,7 @@ class SearchSettingsScreenVM : ViewModel(), KoinComponent {
     private val calendarSearchSettings: CalendarSearchSettings by inject()
     private val shortcutSearchSettings: ShortcutSearchSettings by inject()
     private val wikipediaSearchSettings: WikipediaSearchSettings by inject()
+    private val geminiSearchSettings: GeminiSearchSettings by inject()
     private val websiteSearchSettings: WebsiteSearchSettings by inject()
     private val unitConverterSettings: UnitConverterSettings by inject()
     private val calculatorSearchSettings: CalculatorSearchSettings by inject()
@@ -86,6 +88,13 @@ class SearchSettingsScreenVM : ViewModel(), KoinComponent {
 
     fun setWikipedia(wikipedia: Boolean) {
         wikipediaSearchSettings.setEnabled(wikipedia)
+    }
+
+    val gemini = geminiSearchSettings.enabled
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
+
+    fun setGemini(gemini: Boolean) {
+        geminiSearchSettings.setEnabled(gemini)
     }
 
     val websites = websiteSearchSettings.enabled

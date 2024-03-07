@@ -163,6 +163,20 @@ fun SearchSettingsScreen() {
                     }
                 )
 
+                val gemini by viewModel.gemini.collectAsStateWithLifecycle(null)
+                PreferenceWithSwitch(
+                    title = stringResource(R.string.preference_search_gemini),
+                    summary = stringResource(R.string.preference_search_gemini_summary),
+                    icon = Icons.Rounded.Wikipedia,
+                    switchValue = gemini == true,
+                    onSwitchChanged = {
+                        viewModel.setGemini(it)
+                    },
+                    onClick = {
+                        navController?.navigate("settings/search/gemini")
+                    }
+                )
+
                 val websites by viewModel.websites.collectAsStateWithLifecycle(null)
                 SwitchPreference(
                     title = stringResource(R.string.preference_search_websites),

@@ -383,4 +383,12 @@ message LegacySettings {
     bool charging = 1;
   }
   AnimationSettings animations = 31;
+
+  message GeminiSearchSettings {
+    bool enabled = 1;
+    bool images = 2;
+    string custom_url = 3;
+  }
+  GeminiSearchSettings gemini_search = 32;
+
 }

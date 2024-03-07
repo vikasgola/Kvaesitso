@@ -38,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import de.mm20.launcher2.search.Article
 import de.mm20.launcher2.search.SavableSearchable
 import de.mm20.launcher2.ui.R
 import de.mm20.launcher2.ui.common.FavoritesTagSelector
@@ -49,6 +50,7 @@ import de.mm20.launcher2.ui.launcher.search.calculator.CalculatorItem
 import de.mm20.launcher2.ui.launcher.search.common.grid.GridItem
 import de.mm20.launcher2.ui.launcher.search.common.list.ListItem
 import de.mm20.launcher2.ui.launcher.search.favorites.SearchFavoritesVM
+import de.mm20.launcher2.ui.launcher.search.gemini.GeminiItem
 import de.mm20.launcher2.ui.launcher.search.unitconverter.UnitConverterItem
 import de.mm20.launcher2.ui.launcher.search.website.WebsiteItem
 import de.mm20.launcher2.ui.launcher.search.wikipedia.ArticleItem
@@ -90,6 +92,7 @@ fun SearchColumn(
     val unitConverter by viewModel.unitConverterResults
     val calculator by viewModel.calculatorResults
     val wikipedia by viewModel.articleResults
+    val gemini by viewModel.geminiResults
     val website by viewModel.websiteResults
     val hiddenResults by viewModel.hiddenResults
 
@@ -298,6 +301,11 @@ fun SearchColumn(
         for (wiki in wikipedia) {
             SingleResult(highlight = bestMatch == wiki) {
                 ArticleItem(article = wiki)
+            }
+        }
+        for (gemi in gemini) {
+            SingleResult(highlight = bestMatch == gemi) {
+                GeminiItem(geminiResponse = gemi)
             }
         }
         for (ws in website) {

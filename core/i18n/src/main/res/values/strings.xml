@@ -81,8 +81,10 @@
       a fallback that is suited best for most users of this language should be used
       (English in most cases) -->
     <string name="wikipedia_url">https://en.wikipedia.org</string>
+    <string name="gemini_url">https://generativelanguage.googleapis.com</string>
     <!-- Shown in Wikipedia results to indicate where they come from -->
     <string name="wikipedia_source">From Wikipedia</string>
+    <string name="gemini_source">From Gemini</string>
     <!-- File meta data, title of audio tracks -->
     <string name="file_meta_title">Title: %1$s</string>
     <!-- File meta data, artist of audio tracks -->
@@ -639,6 +641,8 @@
     <string name="preference_search_currencyconverter_summary">Periodically download exchange rates to convert currencies</string>
     <string name="preference_search_wikipedia">Wikipedia</string>
     <string name="preference_search_wikipedia_summary">Search the free encyclopedia</string>
+    <string name="preference_search_gemini">Gemini</string>
+    <string name="preference_search_gemini_summary">Search the Google Gemini with API Key</string>
     <string name="preference_search_websites">Websites</string>
     <string name="preference_search_websites_summary">Show a preview of a website if the search query is a URL</string>
     <string name="preference_search_websearch">Web search</string>
@@ -681,6 +685,7 @@
     <string name="preference_screen_tags">Tags</string>
     <string name="preference_screen_tags_summary">Manage tags and tagged items</string>
     <string name="preference_wikipedia_customurl">Wikipedia URL</string>
+    <string name="preference_gemini_customurl">Wikipedia URL</string>
     <string name="preference_edit_favorites_summary">Change the order of pinned items</string>
     <string name="preference_category_favorites_frequently_used">Frequently used</string>
     <string name="preference_favorites_frequently_used_summary">Show frequently used items in favorites</string>

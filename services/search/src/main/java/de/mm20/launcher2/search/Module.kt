@@ -12,6 +12,7 @@ val searchModule = module {
             get(named<Contact>()),
             get(named<File>()),
             get(named<Article>()),
+            get(named<GeminiResponse>()),
             get(),
             get(),
             get(named<Website>()),

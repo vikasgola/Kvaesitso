@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
-        
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -16,8 +16,8 @@ android {
     buildTypes {
         release {
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -30,25 +30,25 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    namespace = "de.mm20.launcher2.favorites"
+    namespace = "de.mm20.launcher2.gemini"
 }
 
 dependencies {
     implementation(libs.bundles.kotlin)
     implementation(libs.androidx.core)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.browser)
+
     implementation(libs.bundles.androidx.lifecycle)
+
+    implementation(libs.okhttp)
+    implementation(libs.bundles.retrofit)
 
     implementation(libs.koin.android)
 
-    implementation(project(":core:base"))
-    implementation(project(":data:calendar"))
-    implementation(project(":data:database"))
     implementation(project(":core:preferences"))
+    implementation(project(":core:base"))
     implementation(project(":core:ktx"))
-    implementation(project(":data:wikipedia"))
-    implementation(project(":data:gemini"))
-    implementation(project(":services:badges"))
     implementation(project(":core:crashreporter"))
 
 }

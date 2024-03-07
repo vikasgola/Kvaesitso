@@ -42,6 +42,7 @@ import de.mm20.launcher2.ui.settings.debug.DebugSettingsScreen
 import de.mm20.launcher2.ui.settings.easteregg.EasterEggSettingsScreen
 import de.mm20.launcher2.ui.settings.favorites.FavoritesSettingsScreen
 import de.mm20.launcher2.ui.settings.filesearch.FileSearchSettingsScreen
+import de.mm20.launcher2.ui.settings.gemini.GeminiSettingsScreen
 import de.mm20.launcher2.ui.settings.gestures.GestureSettingsScreen
 import de.mm20.launcher2.ui.settings.hiddenitems.HiddenItemsSettingsScreen
 import de.mm20.launcher2.ui.settings.homescreen.HomescreenSettingsScreen
@@ -150,6 +151,9 @@ class SettingsActivity : BaseActivity() {
                                 }
                                 composable("settings/search/wikipedia") {
                                     WikipediaSettingsScreen()
+                                }
+                                composable("settings/search/gemini") {
+                                    GeminiSettingsScreen()
                                 }
                                 composable("settings/search/files") {
                                     FileSearchSettingsScreen()

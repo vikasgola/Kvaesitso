@@ -22,6 +22,7 @@ import de.mm20.launcher2.unitconverter.unitConverterModule
 import de.mm20.launcher2.websites.websitesModule
 import de.mm20.launcher2.widgets.widgetsModule
 import de.mm20.launcher2.wikipedia.wikipediaModule
+import de.mm20.launcher2.gemini.geminiModule
 import de.mm20.launcher2.database.databaseModule
 import de.mm20.launcher2.debug.initDebugMode
 import de.mm20.launcher2.globalactions.globalActionsModule
@@ -86,6 +87,7 @@ class LauncherApplication : Application(), CoroutineScope, ImageLoaderFactory {
                     websitesModule,
                     widgetsModule,
                     wikipediaModule,
+                    geminiModule,
                     servicesTagsModule,
                     widgetsServiceModule,
                     dataPluginsModule,
