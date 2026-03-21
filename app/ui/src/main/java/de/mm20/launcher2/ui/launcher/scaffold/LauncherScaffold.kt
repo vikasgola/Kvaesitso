@@ -1487,51 +1487,59 @@ internal fun LauncherScaffold(
                 config = config,
                 modifier = Modifier
                     .fillMaxSize(),
-                insets = systemBarInsets
-                    .let { if (state.currentComponent?.hasIme == true) it.union(WindowInsets.ime) else it }
-                    .add(searchBarInsets).add(filterBarInsets)
-                    .asPaddingValues(),
+                insets = run {
+                    var secondaryInsets = systemBarInsets
+                        .let { if (state.currentComponent?.hasIme == true) it.union(WindowInsets.ime) else it }
+                    if (state.currentComponent?.showSearchBar != false) {
+                        secondaryInsets = secondaryInsets.add(searchBarInsets)
+                    }
+                    secondaryInsets.add(filterBarInsets).asPaddingValues()
+                },
             )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .searchBarAnimation(
-                        state,
-                        config,
-                        systemBarInsets
-                            .union(WindowInsets.ime)
-                            .add(filterBarInsets)
-                            .asPaddingValues()
-                    )
-            ) {
-                LauncherSearchBar(
+            // When showSearchBar is false, do not compose the overlay: alpha(0f) still participates in
+            // hit testing, so a full-screen Box would steal taps meant for the secondary page (e.g. RSS).
+            if (state.currentComponent?.showSearchBar != false) {
+                Box(
                     modifier = Modifier
-                        .widthIn(max = 916.dp)
-                        .align(
-                            if (config.searchBarPosition == SearchBarPosition.Top) Alignment.TopCenter
-                            else Alignment.BottomCenter
-                        ),
-                    searchBarOffset = { state.currentSearchBarOffset.roundToInt() },
-                    style = config.searchBarStyle,
-                    focused = state.isSearchBarFocused,
-                    actions = searchActions,
-                    level = { state.searchBarLevel },
-                    bottomSearchBar = config.searchBarPosition == SearchBarPosition.Bottom,
-                    onFocusChange = {
-                        if (it) {
-                            scope.launch { state.onSearchBarTap() }
-                        }
-                        state.isSearchBarFocused = it
-                    },
-                    onKeyboardActionGo = if (launchOnEnter) {
-                        { searchVM.launchBestMatchOrAction(activity) }
-                    } else null,
-                    highlightedAction = highlightedResult as? SearchAction,
-                    darkColors = config.darkSearchBar,
-                    isSearchOpen = state.currentComponent is SearchComponent && state.isSettledOnSecondaryPage ||
-                            config.homeComponent is SearchComponent && !state.isSettledOnSecondaryPage,
-                )
+                        .fillMaxSize()
+                        .searchBarAnimation(
+                            state,
+                            config,
+                            systemBarInsets
+                                .union(WindowInsets.ime)
+                                .add(filterBarInsets)
+                                .asPaddingValues()
+                        )
+                ) {
+                    LauncherSearchBar(
+                        modifier = Modifier
+                            .widthIn(max = 916.dp)
+                            .align(
+                                if (config.searchBarPosition == SearchBarPosition.Top) Alignment.TopCenter
+                                else Alignment.BottomCenter
+                            ),
+                        searchBarOffset = { state.currentSearchBarOffset.roundToInt() },
+                        style = config.searchBarStyle,
+                        focused = state.isSearchBarFocused,
+                        actions = searchActions,
+                        level = { state.searchBarLevel },
+                        bottomSearchBar = config.searchBarPosition == SearchBarPosition.Bottom,
+                        onFocusChange = {
+                            if (it) {
+                                scope.launch { state.onSearchBarTap() }
+                            }
+                            state.isSearchBarFocused = it
+                        },
+                        onKeyboardActionGo = if (launchOnEnter) {
+                            { searchVM.launchBestMatchOrAction(activity) }
+                        } else null,
+                        highlightedAction = highlightedResult as? SearchAction,
+                        darkColors = config.darkSearchBar,
+                        isSearchOpen = state.currentComponent is SearchComponent && state.isSettledOnSecondaryPage ||
+                                config.homeComponent is SearchComponent && !state.isSettledOnSecondaryPage,
+                    )
+                }
             }
             if (isFilterBarVisible) {
                 Box(
@@ -1821,7 +1829,7 @@ private fun Modifier.searchBarAnimation(
     }
 
     val modifier =
-        if (component?.showSearchBar == false && config.searchBarStyle == SearchBarStyle.Hidden) {
+        if (component?.showSearchBar == false) {
             Modifier.alpha(0f)
         } else {
             Modifier.offset(y = offset)

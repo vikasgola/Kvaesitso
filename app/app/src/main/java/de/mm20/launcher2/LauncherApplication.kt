@@ -32,6 +32,8 @@ import de.mm20.launcher2.permissions.permissionsModule
 import de.mm20.launcher2.data.plugins.dataPluginsModule
 import de.mm20.launcher2.devicepose.devicePoseModule
 import de.mm20.launcher2.feed.feedModule
+import de.mm20.launcher2.rss.rssModule
+import de.mm20.launcher2.ui.launcher.rss.rssUiModule
 import de.mm20.launcher2.plugins.servicesPluginsModule
 import de.mm20.launcher2.preferences.preferencesModule
 import de.mm20.launcher2.profiles.profilesModule
@@ -100,6 +102,8 @@ class LauncherApplication : Application(), CoroutineScope, ImageLoaderFactory {
                     profilesModule,
                     i18nDataModule,
                     feedModule,
+                    rssModule,
+                    rssUiModule,
                 )
             )
         }

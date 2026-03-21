@@ -13,6 +13,7 @@ import de.mm20.launcher2.ui.component.preferences.PreferenceScreen
 import de.mm20.launcher2.ui.locals.LocalBackStack
 import de.mm20.launcher2.ui.settings.breezyweather.BreezyWeatherSettingsRoute
 import de.mm20.launcher2.ui.settings.feed.FeedIntegrationSettingsRoute
+import de.mm20.launcher2.ui.settings.rss.RssSettingsRoute
 import de.mm20.launcher2.ui.settings.media.MediaIntegrationSettingsRoute
 import de.mm20.launcher2.ui.settings.nextcloud.NextcloudSettingsRoute
 import de.mm20.launcher2.ui.settings.owncloud.OwncloudSettingsRoute
@@ -56,6 +57,13 @@ fun IntegrationsSettingsScreen() {
                         }
                     )
                 }
+                Preference(
+                    title = stringResource(R.string.preference_rss_feeds),
+                    icon = R.drawable.news_24px,
+                    onClick = {
+                        backStack.add(RssSettingsRoute)
+                    }
+                )
             }
         }
         item {

@@ -7,6 +7,7 @@ import de.mm20.launcher2.preferences.migrations.Migration3
 import de.mm20.launcher2.preferences.migrations.Migration4
 import de.mm20.launcher2.preferences.migrations.Migration5
 import de.mm20.launcher2.preferences.migrations.Migration6
+import de.mm20.launcher2.preferences.migrations.Migration7
 import de.mm20.launcher2.settings.BaseSettings
 
 internal class LauncherDataStore(
@@ -21,6 +22,7 @@ internal class LauncherDataStore(
         Migration4(),
         Migration5(),
         Migration6(),
+        Migration7(),
     ),
     corruptionHandler = ReplaceFileCorruptionHandler { LauncherSettingsData() }
 ) {

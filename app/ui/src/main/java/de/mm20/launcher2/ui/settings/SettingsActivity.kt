@@ -120,6 +120,8 @@ import de.mm20.launcher2.ui.settings.plugins.PluginSettingsRoute
 import de.mm20.launcher2.ui.settings.plugins.PluginSettingsScreen
 import de.mm20.launcher2.ui.settings.plugins.PluginsSettingsRoute
 import de.mm20.launcher2.ui.settings.plugins.PluginsSettingsScreen
+import de.mm20.launcher2.ui.settings.rss.RssSettingsRoute
+import de.mm20.launcher2.ui.settings.rss.RssSettingsScreen
 import de.mm20.launcher2.ui.settings.search.SearchSettingsRoute
 import de.mm20.launcher2.ui.settings.search.SearchSettingsScreen
 import de.mm20.launcher2.ui.settings.searchactions.SearchActionsSettingsRoute
@@ -328,6 +330,9 @@ class SettingsActivity : BaseActivity() {
             entry<FeedIntegrationSettingsRoute> {
                 FeedIntegrationSettingsScreen()
             }
+            entry<RssSettingsRoute> {
+                RssSettingsScreen()
+            }
         }
 
 
@@ -412,6 +417,7 @@ class SettingsActivity : BaseActivity() {
             ROUTE_MEDIA_INTEGRATION -> MediaIntegrationSettingsRoute
             ROUTE_SEARCH_ACTIONS -> SearchActionsSettingsRoute
             ROUTE_HIDDEN_ITEMS -> HiddenItemsSettingsRoute
+            ROUTE_RSS_FEEDS -> RssSettingsRoute
             ROUTE_CRASH_REPORT if (intent.hasExtra(EXTRA_CRASH_REPORT_PATH)) -> {
                 CrashReportRoute(intent.getStringExtra(EXTRA_CRASH_REPORT_PATH)!!)
             }
@@ -425,6 +431,7 @@ class SettingsActivity : BaseActivity() {
         const val ROUTE_MEDIA_INTEGRATION = "settings/integrations/media"
         const val ROUTE_SEARCH_ACTIONS = "settings/search/searchactions"
         const val ROUTE_HIDDEN_ITEMS = "settings/search/hiddenitems"
+        const val ROUTE_RSS_FEEDS = "settings/integrations/rss"
         const val ROUTE_CRASH_REPORT = "settings/debug/crashreport"
         const val EXTRA_CRASH_REPORT_PATH = "crash_report_path"
     }

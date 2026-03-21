@@ -211,6 +211,7 @@ gradle-app.setting
 
 # Signing files
 .signing/
+keystore.properties
 
 # Local configuration file (sdk path, etc)
 

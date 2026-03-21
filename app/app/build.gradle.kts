@@ -1,11 +1,18 @@
 import android.annotation.SuppressLint
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+}
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
 }
 
 android {
@@ -32,12 +39,19 @@ android {
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         @SuppressLint("HighAppVersionCode")
-        versionCode = System.getenv("VERSION_CODE_OVERRIDE")?.toIntOrNull() ?: 2026012400
-        versionName = "1.39.3"
-        signingConfig = signingConfigs.getByName("debug")
+        versionCode = System.getenv("VERSION_CODE_OVERRIDE")?.toIntOrNull() ?: 2026032200
+        versionName = "1.39.4"
     }
 
     signingConfigs {
+        if (keystorePropertiesFile.exists()) {
+            create("localRelease") {
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile")!!)
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
         create("gh-actions") {
             storeFile = file("${System.getenv("RUNNER_TEMP")}/keystore/keystore.jks")
             storePassword = System.getenv("KEYSTORE_PASSWORD")
@@ -49,6 +63,8 @@ android {
     buildTypes {
         release {
             applicationIdSuffix = ".release"
+            signingConfig = signingConfigs.findByName("localRelease")
+                ?: signingConfigs.getByName("debug")
 
             postprocessing {
                 isRemoveUnusedCode = true
@@ -59,6 +75,7 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
+            signingConfig = signingConfigs.getByName("debug")
         }
         create("nightly") {
             initWith(getByName("release"))
@@ -159,6 +176,7 @@ dependencies {
     implementation(project(":services:plugins"))
     implementation(project(":core:devicepose"))
     implementation(project(":services:feed"))
+    implementation(project(":data:rss"))
 
     // Uncomment this if you want annoying notifications in your debug builds
     //debugImplementation(libs.leakcanary)

@@ -57,6 +57,7 @@ import de.mm20.launcher2.ui.launcher.scaffold.NotificationsComponent
 import de.mm20.launcher2.ui.launcher.scaffold.PowerMenuComponent
 import de.mm20.launcher2.ui.launcher.scaffold.QuickSettingsComponent
 import de.mm20.launcher2.ui.launcher.scaffold.RecentsComponent
+import de.mm20.launcher2.ui.launcher.scaffold.RssReaderComponent
 import de.mm20.launcher2.ui.launcher.scaffold.ScaffoldAnimation
 import de.mm20.launcher2.ui.launcher.scaffold.ScaffoldConfiguration
 import de.mm20.launcher2.ui.launcher.scaffold.ScaffoldGesture
@@ -325,6 +326,11 @@ abstract class SharedLauncherActivity(
 
                                             is GestureAction.Feed -> ScaffoldGesture(
                                                 component = FeedComponent,
+                                                animation = if (gesture.orientation == null) ScaffoldAnimation.ZoomIn else ScaffoldAnimation.Push,
+                                            )
+
+                                            is GestureAction.RssReader -> ScaffoldGesture(
+                                                component = RssReaderComponent,
                                                 animation = if (gesture.orientation == null) ScaffoldAnimation.ZoomIn else ScaffoldAnimation.Push,
                                             )
 

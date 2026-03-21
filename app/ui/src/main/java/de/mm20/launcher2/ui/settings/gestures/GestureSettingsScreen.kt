@@ -75,6 +75,7 @@ fun GestureSettingsScreen() {
                 }
         }
         add(stringResource(R.string.gesture_action_launch_app) to GestureAction.Launch(null))
+        add(stringResource(R.string.gesture_action_rss_reader) to GestureAction.RssReader)
     }
 
     val optionsWithFeed =

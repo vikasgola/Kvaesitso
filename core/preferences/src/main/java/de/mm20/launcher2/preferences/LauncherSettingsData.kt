@@ -11,7 +11,7 @@ import java.util.UUID
 @Serializable
 @ConsistentCopyVisibility
 data class LauncherSettingsData internal constructor(
-    val schemaVersion: Int = 6,
+    val schemaVersion: Int = 7,
 
     val uiColorScheme: ColorScheme = ColorScheme.System,
     @Serializable(with = UUIDSerializer::class)
@@ -151,11 +151,13 @@ data class LauncherSettingsData internal constructor(
 
     val gesturesSwipeDown: GestureAction = GestureAction.Search,
     val gesturesSwipeLeft: GestureAction = GestureAction.NoAction,
-    val gesturesSwipeRight: GestureAction = GestureAction.NoAction,
+    val gesturesSwipeRight: GestureAction = GestureAction.RssReader,
     val gesturesSwipeUp: GestureAction = GestureAction.Widgets(),
     val gesturesDoubleTap: GestureAction = GestureAction.ScreenLock,
     val gesturesLongPress: GestureAction = GestureAction.NoAction,
     val gesturesHomeButton: GestureAction = GestureAction.NoAction,
+
+    val rssFeedUrls: List<String> = emptyList(),
 
     val animationsCharging: Boolean = true,
 
@@ -408,6 +410,10 @@ sealed interface GestureAction {
     @Serializable
     @SerialName("feed")
     data object Feed : GestureAction
+
+    @Serializable
+    @SerialName("rss_reader")
+    data object RssReader : GestureAction
 }
 
 
